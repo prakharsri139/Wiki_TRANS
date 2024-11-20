@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wikipedia Search</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Wikipedia Search</h1>
+            <p>Find summaries of topics directly from Wikipedia</p>
+        </header>
+        <main>
+            <form method="POST">
+                {% csrf_token %}
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="search-bar" 
+                    placeholder="Enter a topic to search..."
+                    required
+                >
+                <button type="submit" class="search-button">Search</button>
+            </form>
+            <div class="result">
+                {% if search %}
+                <h2>Search Result:</h2>
+                <p>{{ search }}</p>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="text_to_translate" value="{{ search }}">
+                <select name="target_language" required>
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="zh">Chinese</option>
+                    <option value="hi">Hindi</option>
+                    <!-- Add more language options here -->
+                </select>
+                <button type="submit" name="translate" class="translate-button">Translate</button>
+            </form>
+            {% endif %}
+
+            <!-- Display Translated Result -->
+            {% if translated_result %}
+            <h2>Translated Result:</h2>
+            <p>{{ translated_result }}</p>
+            {% endif %}
+        </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Wikipedia Search. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
